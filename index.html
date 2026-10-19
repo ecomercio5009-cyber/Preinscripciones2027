@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preinscripción 2027 - Escuela de Comercio N° 5009</title>
+  <style>
+    :root {
+      --primary-color: #0d3b66;
+      --secondary-color: #005f73;
+      --accent-color: #ee9b00;
+      --bg-color: #f4f7f6;
+      --card-bg: #ffffff;
+      --text-color: #2b2d42;
+      --error-color: #d90429;
+      --success-color: #38b000;
+      --border-radius: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding: 20px 10px;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 25px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .admin-btn-header {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 1px solid white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: background 0.3s;
+    }
+
+    .admin-btn-header:hover {
+      background: rgba(255,255,255,0.4);
+    }
+
+    form {
+      padding: 25px 20px;
+    }
+
+    .fieldset {
+      border: none;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .fieldset legend {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    @media (max-width: 600px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #444;
+    }
+
+    label .req {
+      color: var(--error-color);
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(0, 95, 115, 0.2);
+    }
+
+    input.error-input, select.error-input {
+      border-color: var(--error-color);
+      background-color: #fff0f3;
+    }
+
+    .error-msg {
+      color: var(--error-color);
+      font-size: 0.8rem;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 5px;
+    }
+
+    .radio-group label {
+      font-weight: normal;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 14px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--secondary-color);
+    }
+
+    /* Modales y Carteles de Alerta */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 25px;
+      border-radius: var(--border-radius);
+      max-width: 550px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .modal-header {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 8px;
+    }
+
+    .receipt-box {
+      background: #f8f9fa;
+      border: 1px dashed var(--secondary-color);
+      padding: 15px;
+      border-radius: 6px;
+      margin: 15px 0;
+      font-size: 0.9rem;
+    }
+
+    .receipt-box p {
+      margin-bottom: 6px;
+    }
+
+    .folio-tag {
+      display: block;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--primary-color);
+      background: #e0f2fe;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    .btn-close {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      float: right;
+    }
+
+    /* Alert Banner Inline */
+    .alert-banner {
+      display: none;
+      padding: 12px;
+      background-color: #ffccd5;
+      color: var(--error-color);
+      border: 1px solid var(--error-color);
+      border-radius: 6px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .closed-banner {
+      display: none;
+      padding: 20px;
+      text-align: center;
+      background: #fff3cd;
+      color: #856404;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    /* Estilos Panel Admin */
+    .admin-card {
+      background: #f0f4f8;
+      border: 1px solid #cbd5e1;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    .admin-card h4 {
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .btn-admin-save {
+      background: var(--success-color);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <button type="button" class="admin-btn-header" onclick="openAdminModal()">⚙️ Admin</button>
+      <h1>Escuela de Comercio N° 5009</h1>
+      <p>Formulario Digital de Preinscripción — Ciclo Lectivo 2027</p>
+    </header>
+
+    <div id="closedBanner" class="closed-banner">
+      ⚠️ Las inscripciones online se encuentran actualmente deshabilitadas o los cupos están agotados. Contacte a la institución.
+    </div>
+
+    <div id="alertBanner" class="alert-banner"></div>
+
+    <form id="preinscriptionForm" onsubmit="handleFormSubmit(event)">
+      
+      <!-- SECCIÓN 1: DATOS DEL ESTUDIANTE -->
+      <div class="fieldset">
+        <legend>👤 1. Datos del Estudiante</legend>
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="estApellido">Apellido <span class="req">*</span></label>
+            <input type="text" id="estApellido" required>
+          </div>
+          <div class="form-group">
+            <label for="estNombre">Nombre <span class="req">*</span></label>
+            <input type="text" id="estNombre" required>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="estDni">DNI / Documento (Sin puntos) <span class="req">*</span></label>
+            <input type="text" id="estDni" maxlength="8" placeholder="Ej: 52123456" oninput="validateDNI(this)" required>
+            <span class="error-msg" id="err-estDni">Debe ingresar un DNI válido de 7 u 8 dígitos numéricos sin puntos.</span>
+          </div>
+          <div class="form-group">
+            <label for="estFechaNac">Fecha de Nacimiento (Desde 2013) <span class="req">*</span></label>
+            <input type="date" id="estFechaNac" onchange="validateFechaNac(this)" required>
+            <span class="error-msg" id="err-estFechaNac">El alumno debe haber nacido a partir del año 2013.</span>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="estLugarNac">Lugar de Nacimiento <span class="req">*</span></label>
+            <input type="text" id="estLugarNac" required>
+          </div>
+          <div class="form-group">
+            <label for="estDomicilio">Domicilio Completo <span class="req">*</span></label>
+            <input type="text" id="estDomicilio" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN 2: ESCUELA DE PROCEDENCIA Y TURNO -->
+      <div class="fieldset">
+        <legend>🏫 2. Procedencia y Selección de Turno</legend>
+        
+        <div class="form-group">
+          <label for="escuelaOrigen">Escuela Primaria de Procedencia <span class="req">*</span></label>
+          <select id="escuelaOrigen" required>
+            <option value="">-- Seleccione una Escuela --</option>
+            <option value="N° 4101 MARTINA SILVA DE GURRUCHAGA">N° 4101 MARTINA SILVA DE GURRUCHAGA</option>
+            <option value="N° 4104 PACHI GORRITI">N° 4104 PACHI GORRITI</option>
+            <option value="N° 4127 MANUELA PEDRAZA">N° 4127 MANUELA PEDRAZA</option>
+            <option value="N° 4395 FUERZA AÉREA ARGENTINA – POTRERO">N° 4395 FUERZA AÉREA ARGENTINA – POTRERO</option>
+            <option value="N° 4409 VIRGEN DE LA MONTAÑA - LOS BAÑOS">N° 4409 VIRGEN DE LA MONTAÑA - LOS BAÑOS</option>
+            <option value="N° 4509 JUAN FRANCISCO SALINAS - LA PALATA">N° 4509 JUAN FRANCISCO SALINAS - LA PALATA</option>
+            <option value="N° 4639 Profesor Amelio Ronco Ceruti - EL PORVENIR">N° 4639 Profesor Amelio Ronco Ceruti - EL PORVENIR</option>
+            <option value="N° 4673 GENERAL DE BRIGADA (RE) JORGE EDGAR LEAL">N° 4673 GENERAL DE BRIGADA (RE) JORGE EDGAR LEAL</option>
+            <option value="N° 4694 SAN LEONARDO MURIALDO">N° 4694 SAN LEONARDO MURIALDO</option>
+            <option value="N° 4705 REPÚBLICA DE COLOMBIA">N° 4705 REPÚBLICA DE COLOMBIA</option>
+            <option value="N° 4768 PABLO VI - PUENTE DE PLATA">N° 4768 PABLO VI - PUENTE DE PLATA</option>
+            <option value="N° 4796 José Roberto Iriarte">N° 4796 José Roberto Iriarte</option>
+            <option value="N° 4633 CRISTO REDENTOR - EL NARANJO">N° 4633 CRISTO REDENTOR - EL NARANJO</option>
+            <option value="N° 4479 ELIECER SALGADO - SAN FELIPE">N° 4479 ELIECER SALGADO - SAN FELIPE</option>
+            <option value="N° 4413 JUAN BAUTISTA CABRAL – ANTILLA">N° 4413 JUAN BAUTISTA CABRAL – ANTILLA</option>
+            <option value="N° 4412 ESCUELA FINCA OVANDO">N° 4412 ESCUELA FINCA OVANDO</option>
+            <option value="N° 4383 JUANA MANUELA GORRITI – HORCONES">N° 4383 JUANA MANUELA GORRITI – HORCONES</option>
+            <option value="N° 4351 CHAÑAR AGUADA – BALBOA">N° 4351 CHAÑAR AGUADA – BALBOA</option>
+            <option value="N° 4130 ALBERGUE BATALLA DE SALTA - SANTA MARIA">N° 4130 ALBERGUE BATALLA DE SALTA - SANTA MARIA</option>
+            <option value="N° 4116 CESAR ALBERTO TORINO - COPO QUILE">N° 4116 CESAR ALBERTO TORINO - COPO QUILE</option>
+            <option value="N° 8196 Instituto Privado Nuestra Señora del Carmen">N° 8196 Instituto Privado Nuestra Señora del Carmen</option>
+            <option value="N° 8137 Colegio San Gabriel">N° 8137 Colegio San Gabriel</option>
+            <option value="N° 8173 Centro Educativo San José">N° 8173 Centro Educativo San José</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="gradoCursado">Grado Cursado <span class="req">*</span></label>
+            <select id="gradoCursado" required>
+              <option value="">-- Seleccionar --</option>
+              <option value="7° A">7° A</option>
+              <option value="7° B">7° B</option>
+              <option value="7° C">7° C</option>
+              <option value="Único">Único</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>¿Requiere Acompañamiento MAI? <span class="req">*</span></label>
+            <div class="radio-group">
+              <label><input type="radio" name="mai" value="Sí" required> Sí</label>
+              <label><input type="radio" name="mai" value="No" checked required> No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="turnoDeseado">Turno a Inscribir <span class="req">*</span></label>
+          <select id="turnoDeseado" onchange="checkTurnoAvailability(this)" required>
+            <option value="">-- Seleccione Turno --</option>
+            <option value="Mañana" id="optManana">Mañana</option>
+            <option value="Tarde" id="optTarde">Tarde</option>
+          </select>
+          <span class="error-msg" id="err-turnoDeseado">Este turno ya no cuenta con cupos disponibles.</span>
+        </div>
+      </div>
+
+      <!-- SECCIÓN 3: DATOS DEL TUTOR -->
+      <div class="fieldset">
+        <legend>👨‍👩‍👧 3. Datos del Tutor Responsable</legend>
+        
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="tutorNombre">Nombre y Apellido del Tutor <span class="req">*</span></label>
+            <input type="text" id="tutorNombre" required>
+          </div>
+          <div class="form-group">
+            <label for="tutorVinculo">Vínculo <span class="req">*</span></label>
+            <select id="tutorVinculo" required>
+              <option value="">-- Seleccionar --</option>
+              <option value="Padre">Padre</option>
+              <option value="Madre">Madre</option>
+              <option value="Tutor Legal">Tutor Legal</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="tutorDni">DNI del Tutor (Sin puntos) <span class="req">*</span></label>
+            <input type="text" id="tutorDni" maxlength="8" placeholder="Ej: 30123456" oninput="validateDNI(this)" required>
+            <span class="error-msg" id="err-tutorDni">Ingrese un DNI válido sin puntos.</span>
+          </div>
+          <div class="form-group">
+            <label for="tutorTelefono">Teléfono de Contacto <span class="req">*</span></label>
+            <input type="tel" id="tutorTelefono" placeholder="Ej: 3876123456" required>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="tutorDomicilio">Domicilio del Tutor <span class="req">*</span></label>
+            <input type="text" id="tutorDomicilio" required>
+          </div>
+          <div class="form-group">
+            <label for="tutorProfesion">Profesión u Ocupación <span class="req">*</span></label>
+            <input type="text" id="tutorProfesion" required>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="btnEnviar">Enviar Preinscripción</button>
+    </form>
+  </div>
+
+  <!-- MODAL DE CONFIRMACIÓN / COMPROBANTE -->
+  <div id="confirmModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">Comprobante de Preinscripción</div>
+      <p style="color: var(--success-color); font-weight: bold; text-align: center;">¡Preinscripción enviada con éxito!</p>
+      
+      <div class="receipt-box" id="receiptContent">
+        <span class="folio-tag" id="resFolio">PRE-2027-0000</span>
+        <p><strong>Estudiante:</strong> <span id="resNombreEst"></span></p>
+        <p><strong>DNI Estudiante:</strong> <span id="resDniEst"></span></p>
+        <p><strong>Fecha de Nacimiento:</strong> <span id="resFechaNacEst"></span></p>
+        <p><strong>Escuela de Origen:</strong> <span id="resEscuela"></span></p>
+        <p><strong>Turno Asignado:</strong> <span id="resTurno"></span></p>
+        <p><strong>Tutor Responsable:</strong> <span id="resTutor"></span> (<span id="resVinculo"></span>)</p>
+        <p><strong>Teléfono Tutor:</strong> <span id="resTelTutor"></span></p>
+      </div>
+
+      <p style="font-size: 0.8rem; color: #666; text-align: center; margin-bottom: 15px;">
+        Por favor, conserve o tome una captura de pantalla de este comprobante para presentarlo en la institución.
+      </p>
+
+      <button class="btn-close" onclick="closeModal('confirmModal')">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE ADMINISTRADOR -->
+  <div id="adminModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">Panel de Administración</div>
+      
+      <div id="adminAuthSection">
+        <div class="form-group">
+          <label for="adminPass">Contraseña de Administrador:</label>
+          <input type="password" id="adminPass" placeholder="Ingrese clave">
+        </div>
+        <button type="button" class="btn-admin-save" onclick="authenticateAdmin()" style="width: 100%;">Ingresar</button>
+      </div>
+
+      <div id="adminControlSection" style="display: none;">
+        <div class="toggle-switch">
+          <input type="checkbox" id="chkHabilitado" onchange="toggleFormStatus(this.checked)">
+          <label for="chkHabilitado"><strong>Habilitar Formulario para el público</strong></label>
+        </div>
+
+        <div class="admin-card">
+          <h4>Configuración de Cupos por Turno</h4>
+          <div class="form-group">
+            <label for="limitManana">Cupo Máximo Turno Mañana:</label>
+            <input type="number" id="limitManana" min="0">
+          </div>
+          <div class="form-group">
+            <label for="limitTarde">Cupo Máximo Turno Tarde:</label>
+            <input type="number" id="limitTarde" min="0">
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <h4>Estado de Registros Locales</h4>
+          <p>Registrados Mañana: <strong id="countManana">0</strong></p>
+          <p>Registrados Tarde: <strong id="countTarde">0</strong></p>
+        </div>
+
+        <button type="button" class="btn-admin-save" onclick="saveAdminSettings()" style="width:100%; margin-bottom:10px;">Guardar Configuración</button>
+        <button class="btn-close" onclick="closeModal('adminModal')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // CONFIGURACIÓN Y ESTADO INICIAL
+    // =========================================================================
+    // Reemplaza esta URL con la Web App URL obtenida de tu desplegado de Google Apps Script
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxYOUR_SCRIPT_ID_HERE/exec";
+    
+    const ADMIN_PASS_HASH = "Comercio5009"; // Cambiar por tu contraseña de administrador
+
+    let appConfig = JSON.parse(localStorage.getItem('appConfig')) || {
+      formHabilitado: true,
+      cupoManana: 100,
+      cupoTarde: 100,
+      inscritosManana: 0,
+      inscritosTarde: 0,
+      dnisRegistrados: []
+    };
+
+    document.addEventListener("DOMContentLoaded", function() {
+      applyAdminConfig();
+    });
+
+    // Save Local Storage
+    function saveConfig() {
+      localStorage.setItem('appConfig', JSON.stringify(appConfig));
+    }
+
+    // =========================================================================
+    // VALIDACIONES INSTANTÁNEAS Y REGLAS DE NEGOCIO
+    // =========================================================================
+    function validateDNI(input) {
+      const val = input.value.trim();
+      const errElem = document.getElementById(`err-${input.id}`);
+      const isNumeric = /^\d+$/.test(val);
+      
+      if (!isNumeric || val.length < 7 || val.length > 8) {
+        input.classList.add('error-input');
+        if (errElem) errElem.style.display = 'block';
+        return false;
+      } else {
+        input.classList.remove('error-input');
+        if (errElem) errElem.style.display = 'none';
+        return true;
+      }
+    }
+
+    function validateFechaNac(input) {
+      const errElem = document.getElementById('err-estFechaNac');
+      if (!input.value) return false;
+
+      const year = new Date(input.value).getFullYear();
+      
+      // Control de Edad: Solo desde año 2013 en adelante
+      if (isNaN(year) || year < 2013) {
+        input.classList.add('error-input');
+        if (errElem) errElem.style.display = 'block';
+        return false;
+      } else {
+        input.classList.remove('error-input');
+        if (errElem) errElem.style.display = 'none';
+        return true;
+      }
+    }
+
+    function checkTurnoAvailability(select) {
+      const turno = select.value;
+      const errElem = document.getElementById('err-turnoDeseado');
+
+      if (turno === "Mañana" && appConfig.inscritosManana >= appConfig.cupoManana) {
+        select.classList.add('error-input');
+        errElem.style.display = 'block';
+        return false;
+      } else if (turno === "Tarde" && appConfig.inscritosTarde >= appConfig.cupoTarde) {
+        select.classList.add('error-input');
+        errElem.style.display = 'block';
+        return false;
+      } else {
+        select.classList.remove('error-input');
+        errElem.style.display = 'none';
+        return true;
+      }
+    }
+
+    function showAlert(msg) {
+      const alertBox = document.getElementById('alertBanner');
+      alertBox.innerText = msg;
+      alertBox.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function hideAlert() {
+      const alertBox = document.getElementById('alertBanner');
+      alertBox.style.display = 'none';
+    }
+
+    // =========================================================================
+    // MANEJO Y ENVÍO DEL FORMULARIO
+    // =========================================================================
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      hideAlert();
+
+      if (!appConfig.formHabilitado) {
+        showAlert("❌ Las inscripciones se encuentran cerradas actualmente.");
+        return;
+      }
+
+      // 1. Re-validar campos
+      const estDniElem = document.getElementById('estDni');
+      const estFechaElem = document.getElementById('estFechaNac');
+      const tutorDniElem = document.getElementById('tutorDni');
+      const turnoElem = document.getElementById('turnoDeseado');
+
+      if (!validateDNI(estDniElem)) {
+        showAlert("❌ Corrija el DNI del alumno (debe contener 7 u 8 números sin puntos).");
+        return;
+      }
+      if (!validateFechaNac(estFechaElem)) {
+        showAlert("❌ Error de Fecha de Nacimiento: Solo se admiten estudiantes nacidos desde el año 2013 en adelante.");
+        return;
+      }
+      if (!validateDNI(tutorDniElem)) {
+        showAlert("❌ Corrija el DNI del tutor (debe contener entre 7 u 8 números sin puntos).");
+        return;
+      }
+      if (!checkTurnoAvailability(turnoElem)) {
+        showAlert("❌ El turno seleccionado no posee cupos disponibles.");
+        return;
+      }
+
+      // 2. Control de DNI Repetido Local
+      const dniIngresado = estDniElem.value.trim();
+      if (appConfig.dnisRegistrados.includes(dniIngresado)) {
+        showAlert("❌ Error: Este DNI ya registra una preinscripción realizada.");
+        return;
+      }
+
+      // 3. Generar Folio
+      const randomNum = Math.floor(1000 + Math.random() * 9000);
+      const folio = `PRE-2027-${randomNum}`;
+
+      // 4. Compilar datos del Formulario
+      const formData = {
+        folio: folio,
+        estApellido: document.getElementById('estApellido').value.trim(),
+        estNombre: document.getElementById('estNombre').value.trim(),
+        estDni: dniIngresado,
+        estFechaNac: estFechaElem.value,
+        estLugarNac: document.getElementById('estLugarNac').value.trim(),
+        estDomicilio: document.getElementById('estDomicilio').value.trim(),
+        escuelaOrigen: document.getElementById('escuelaOrigen').value,
+        gradoCursado: document.getElementById('gradoCursado').value,
+        mai: document.querySelector('input[name="mai"]:checked').value,
+        turnoDeseado: turnoElem.value,
+        tutorNombre: document.getElementById('tutorNombre').value.trim(),
+        tutorVinculo: document.getElementById('tutorVinculo').value,
+        tutorDni: tutorDniElem.value.trim(),
+        tutorTelefono: document.getElementById('tutorTelefono').value.trim(),
+        tutorDomicilio: document.getElementById('tutorDomicilio').value.trim(),
+        tutorProfesion: document.getElementById('tutorProfesion').value.trim()
+      };
+
+      const btn = document.getElementById('btnEnviar');
+      btn.disabled = true;
+      btn.innerText = "Enviando preinscripción...";
+
+      try {
+        // Enviar a Google Sheets
+        if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+          });
+        }
+
+        // Actualizar estados
+        appConfig.dnisRegistrados.push(dniIngresado);
+        if (formData.turnoDeseado === "Mañana") appConfig.inscritosManana++;
+        if (formData.turnoDeseado === "Tarde") appConfig.inscritosTarde++;
+        saveConfig();
+
+        // Mostrar Comprobante Modal
+        document.getElementById('resFolio').innerText = folio;
+        document.getElementById('resNombreEst').innerText = `${formData.estApellido}, ${formData.estNombre}`;
+        document.getElementById('resDniEst').innerText = formData.estDni;
+        document.getElementById('resFechaNacEst').innerText = formData.estFechaNac;
+        document.getElementById('resEscuela').innerText = formData.escuelaOrigen;
+        document.getElementById('resTurno').innerText = formData.turnoDeseado;
+        document.getElementById('resTutor').innerText = formData.tutorNombre;
+        document.getElementById('resVinculo').innerText = formData.tutorVinculo;
+        document.getElementById('resTelTutor').innerText = formData.tutorTelefono;
+
+        document.getElementById('confirmModal').style.display = 'flex';
+        document.getElementById('preinscriptionForm').reset();
+        applyAdminConfig();
+
+      } catch (err) {
+        showAlert("⚠️ Ocurrió un inconveniente al conectar. Intente nuevamente.");
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Enviar Preinscripción";
+      }
+    }
+
+    // =========================================================================
+    // FUNCIONES DEL PANEL DE ADMINISTRACIÓN
+    // =========================================================================
+    function openAdminModal() {
+      document.getElementById('adminModal').style.display = 'flex';
+      document.getElementById('adminAuthSection').style.display = 'block';
+      document.getElementById('adminControlSection').style.display = 'none';
+      document.getElementById('adminPass').value = '';
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    function authenticateAdmin() {
+      const pass = document.getElementById('adminPass').value;
+      if (pass === ADMIN_PASS_HASH) {
+        document.getElementById('adminAuthSection').style.display = 'none';
+        document.getElementById('adminControlSection').style.display = 'block';
+        
+        // Cargar valores actuales en inputs
+        document.getElementById('chkHabilitado').checked = appConfig.formHabilitado;
+        document.getElementById('limitManana').value = appConfig.cupoManana;
+        document.getElementById('limitTarde').value = appConfig.cupoTarde;
+        document.getElementById('countManana').innerText = appConfig.inscritosManana;
+        document.getElementById('countTarde').innerText = appConfig.inscritosTarde;
+      } else {
+        alert("Contraseña incorrecta");
+      }
+    }
+
+    function saveAdminSettings() {
+      appConfig.formHabilitado = document.getElementById('chkHabilitado').checked;
+      appConfig.cupoManana = parseInt(document.getElementById('limitManana').value) || 0;
+      appConfig.cupoTarde = parseInt(document.getElementById('limitTarde').value) || 0;
+      saveConfig();
+      applyAdminConfig();
+      closeModal('adminModal');
+      alert("Configuración de administración guardada exitosamente.");
+    }
+
+    function toggleFormStatus(status) {
+      appConfig.formHabilitado = status;
+    }
+
+    function applyAdminConfig() {
+      const form = document.getElementById('preinscriptionForm');
+      const banner = document.getElementById('closedBanner');
+      const optManana = document.getElementById('optManana');
+      const optTarde = document.getElementById('optTarde');
+
+      // 1. Control Habilitación Global
+      if (!appConfig.formHabilitado) {
+        form.style.display = 'none';
+        banner.style.display = 'block';
+      } else {
+        form.style.display = 'block';
+        banner.style.display = 'none';
+      }
+
+      // 2. Control Visual de Opciones por Cupo
+      if (appConfig.inscritosManana >= appConfig.cupoManana) {
+        optManana.innerText = "Mañana (SIN CUPOS)";
+        optManana.disabled = true;
+      } else {
+        optManana.innerText = "Mañana";
+        optManana.disabled = false;
+      }
+
+      if (appConfig.inscritosTarde >= appConfig.cupoTarde) {
+        optTarde.innerText = "Tarde (SIN CUPOS)";
+        optTarde.disabled = true;
+      } else {
+        optTarde.innerText = "Tarde";
+        optTarde.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
